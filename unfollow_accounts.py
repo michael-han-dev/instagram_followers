@@ -3,12 +3,16 @@
 # prompts user to select accounts and then unfollows them
 
 import json
+import os
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from dotenv import load_dotenv
 
-INSTAGRAM_USERNAME = "YOUR_USERNAME"
-INSTAGRAM_PASSWORD = "YOUR_PASSWORD"
+load_dotenv()
+
+INSTAGRAM_USERNAME = os.getenv("INSTAGRAM_USERNAME")
+INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 def get_non_followers():
     base_path = Path(__file__).parent
@@ -41,6 +45,10 @@ def select_accounts_to_unfollow(non_followers):
     return to_unfollow
 
 def unfollow_accounts(accounts):
+    if not INSTAGRAM_USERNAME or not INSTAGRAM_PASSWORD:
+        print("Error: Set INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD environment variables.")
+        return
+    
     if not accounts:
         print("No accounts to unfollow.")
         return

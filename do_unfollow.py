@@ -3,14 +3,22 @@
 # reads accounts from accounts_to_unfollow.json and unfollows them
 
 import json
+import os
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from dotenv import load_dotenv
 
-INSTAGRAM_USERNAME = "YOUR_USERNAME"
-INSTAGRAM_PASSWORD = "YOUR_PASSWORD"
+load_dotenv()
+
+INSTAGRAM_USERNAME = os.getenv("INSTAGRAM_USERNAME")
+INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 def main():
+    if not INSTAGRAM_USERNAME or not INSTAGRAM_PASSWORD:
+        print("Error: Set INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD environment variables.")
+        return
+    
     base_path = Path(__file__).parent
     accounts_file = base_path / "accounts_to_unfollow.json"
     

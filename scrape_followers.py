@@ -3,12 +3,16 @@
 # saves the list to followers_list.json
 
 import json
+import os
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from dotenv import load_dotenv
 
-INSTAGRAM_USERNAME = "__michaelhan"
-INSTAGRAM_PASSWORD = "Oakville14."
+load_dotenv()
+
+INSTAGRAM_USERNAME = os.getenv("INSTAGRAM_USERNAME")
+INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 def scrape_followers():
     followers = set()
@@ -89,9 +93,8 @@ def scrape_followers():
     return sorted(followers)
 
 def main():
-    if INSTAGRAM_USERNAME == "YOUR_USERNAME":
-        print("Error: Set your Instagram credentials in the script first.")
-        print("Edit scrape_followers.py and update INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD")
+    if not INSTAGRAM_USERNAME or not INSTAGRAM_PASSWORD:
+        print("Error: Set INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD environment variables.")
         return
     
     print(f"Scraping followers for @{INSTAGRAM_USERNAME}...")
